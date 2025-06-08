@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Симулятор Телескопа</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Three.js -->
+    <script src="https://unpkg.com/three@0.155.0/build/three.min.js"></script>
+</head>
+<body>
+    <!-- Cosmic background elements -->
+    <div class="nebula-overlay"></div>
+    <div class="cosmic-particles"></div>
+    
+    <div class="container">
+        <header>
+            <h1>🔭 Інтерактивний Симулятор Телескопа</h1>
+            <p>Досліджуйте, як різні матеріали впливають на якість зображення та пропускну здатність телескопа</p>
+        </header>
+
+        <main>
+            <div class="controls-section">
+                <h2>Налаштування Оптичних Елементів</h2>
+                
+                <div class="material-controls">
+                    <div class="control-group">
+                        <h3>🪞 Дзеркало</h3>
+                        <select id="mirror-material">
+                            <option value="aluminum">Алюміній</option>
+                            <option value="silver">Срібло</option>
+                            <option value="glass">Поліровне скло</option>
+                            <option value="gold">Золото</option>
+                            <option value="dielectric">Діелектричне покриття</option>
+                            <option value="rough">Грубе дзеркало</option>
+                        </select>
+                        <div class="explanation" id="mirror-explanation">
+                            Алюміній забезпечує хорошу відбивну здатність у видимому спектрі, але має обмеження в UV та IR діапазонах.
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <h3>🔍 Лінза</h3>
+                        <select id="lens-material">
+                            <option value="plastic">Пластик</option>
+                            <option value="glass">Скло (Soda-lime)</option>
+                            <option value="fluorite">Флуорит</option>
+                            <option value="quartz">Кварц</option>
+                            <option value="astro">Астрофізичне скло</option>
+                            <option value="fisheye">Радіальне скло</option>
+                        </select>
+                        <div class="explanation" id="lens-explanation">
+                            Пластик є дешевим варіантом, але має високий рівень аберацій, особливо хроматичних.
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <h3>🌈 Фільтр</h3>
+                        <select id="filter-material">
+                            <option value="clear">Прозорий</option>
+                            <option value="uv">UV-фільтр</option>
+                            <option value="ir">ІЧ-фільтр</option>
+                            <option value="blue">Синій фільтр</option>
+                            <option value="red">Червоний фільтр</option>
+                            <option value="nd">Нейтральна щільність (ND)</option>
+                            <option value="polarizing">Поляризаційний</option>
+                        </select>
+                        <div class="explanation" id="filter-explanation">
+                            Прозорий фільтр пропускає весь видимий спектр без фільтрації світла.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-section">
+                <div class="image-container">
+                    <h3>⭐ Зображення Зорі</h3>
+                    <div class="star-viewport" id="star-viewport">
+                        <canvas id="star-canvas"></canvas>
+                    </div>
+                    <div class="zoom-controls">
+                        <label for="zoom-slider">🔍 Масштаб:</label>
+                        <input type="range" id="zoom-slider" min="0.5" max="3" step="0.1" value="1">
+                        <span id="zoom-value">100%</span>
+                        <button id="zoom-reset" title="Скинути масштаб">↻</button>
+                    </div>
+                    <div class="technical-info">
+                        <p id="fov-info">Поле зору: 2°</p>
+                        <p id="focus-info">Фокус: Хороший</p>
+                    </div>
+                    <div class="image-quality-info">
+                        <p id="quality-description">Якість зображення: Хороша</p>
+                    </div>
+                </div>
+
+                <div class="transmittance-container">
+                    <h3>📊 Пропускна Здатність</h3>
+                    <canvas id="transmittance-canvas" width="400" height="300"></canvas>
+                    <div class="wavelength-info">
+                        <p>Довжина хвилі (нм) → Пропускання (%)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-section">
+                <h3>📝 Загальний Вплив Обраних Матеріалів</h3>
+                <div id="overall-summary">
+                    <p>Обрані матеріали забезпечують стандартну якість зображення з хорошою пропускною здатністю у видимому спектрі.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 

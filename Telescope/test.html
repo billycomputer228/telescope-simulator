@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест Three.js</title>
+    <style>
+        body { margin: 0; padding: 20px; background: #222; color: white; font-family: Arial; }
+        #info { margin-bottom: 20px; }
+        #testCanvas { border: 2px solid #444; }
+    </style>
+</head>
+<body>
+    <div id="info">
+        <h2>Тест Three.js</h2>
+        <p>Перевірка завантаження та роботи Three.js</p>
+        <div id="status">Завантаження...</div>
+    </div>
+    
+    <canvas id="testCanvas" width="300" height="300"></canvas>
+
+    <script src="https://unpkg.com/three@0.155.0/build/three.min.js"></script>
+    <script>
+        const status = document.getElementById('status');
+        
+        function updateStatus(message, color = 'white') {
+            status.innerHTML = `<span style="color: ${color}">${message}</span>`;
+            console.log(message);
+        }
+
+        // Check Three.js loading
+        if (typeof THREE === 'undefined') {
+            updateStatus('❌ Three.js НЕ завантажено!', 'red');
+        } else {
+            updateStatus('✅ Three.js завантажено успішно!', 'green');
+            
+            // Test basic Three.js functionality
+            try {
+                const canvas = document.getElementById('testCanvas');
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+                const renderer = new THREE.WebGLRenderer({ canvas: canvas });
+                
+                renderer.setSize(300, 300);
+                scene.background = new THREE.Color(0x000040);
+                
+                // Create a simple cube
+                const geometry = new THREE.BoxGeometry();
+                const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+                const cube = new THREE.Mesh(geometry, material);
+                scene.add(cube);
+                
+                camera.position.z = 5;
+                
+                // Animation loop
+                function animate() {
+                    requestAnimationFrame(animate);
+                    cube.rotation.x += 0.01;
+                    cube.rotation.y += 0.01;
+                    renderer.render(scene, camera);
+                }
+                
+                animate();
+                updateStatus('✅ Three.js працює! Куб обертається.', 'lime');
+                
+            } catch (error) {
+                updateStatus(`❌ Помилка Three.js: ${error.message}`, 'red');
+                console.error('Three.js error:', error);
+            }
+        }
+        
+        // Check WebGL support
+        function checkWebGL() {
+            try {
+                const canvas = document.createElement('canvas');
+                const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+                if (gl) {
+                    updateStatus(status.innerHTML + '<br>✅ WebGL підтримується', 'lime');
+                } else {
+                    updateStatus(status.innerHTML + '<br>❌ WebGL НЕ підтримується', 'orange');
+                }
+            } catch (e) {
+                updateStatus(status.innerHTML + '<br>❌ Помилка перевірки WebGL', 'red');
+            }
+        }
+        
+        setTimeout(checkWebGL, 1000);
+    </script>
+</body>
+</html> 
